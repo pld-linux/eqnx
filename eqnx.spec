@@ -7,6 +7,7 @@ License:	GPL
 Vendor:		Equinox Systems, Inc.
 Group:		Applications/Communications
 Source0:	%{name}-%{version}-1.tar.gz
+# Source0-md5:	3b335ac7f525036ad3147907adcd0ec8
 Patch0:		%{name}-misc.patch
 URL:		http://www.equinox.com/
 ExclusiveOS:	Linux
