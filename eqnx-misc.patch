@@ -1,0 +1,124 @@
+Binary files eqnx-4.04-1/drv/eqnx.o-up and eqnx-4.04-1.new/drv/eqnx.o-up differ
+diff -uNr eqnx-4.04-1/drv/makefile eqnx-4.04-1.new/drv/makefile
+--- eqnx-4.04-1/drv/makefile	Thu Feb  7 16:35:04 2002
++++ eqnx-4.04-1.new/drv/makefile	Thu Sep 12 23:39:33 2002
+@@ -87,20 +87,6 @@
+    SMP := 0
+ endif
+ 			        
+-# check that running kernel matches SMP configuration from config.h
+-ifneq ($(SMP),$(shell uname -a | grep SMP > /dev/null 2>&1 && echo 1 || echo 0))
+-   $(warning ***)
+-ifeq ($(SMP),1)
+-      $(warning *** Warning: kernel source configuration (SMP))
+-      $(warning *** does not match running kernel (UP).)
+-else
+-      $(warning *** Warning: kernel source configuration (UP))
+-      $(warning *** does not match running kernel (SMP).)
+-endif
+-      $(warning *** Its likely that the Equinox SST driver cannot)
+-      $(warning *** be built or cannot be loaded.)
+-      $(warning ***)
+-endif          
+ 
+ ifeq ($(SMP), 1)
+    MCFLAGS += -D__SMP__
+@@ -143,12 +129,8 @@
+ endif        
+ 
+ ifeq "$(findstring 86, $(shell uname -m))" "86"
+-   MCFLAGS += -DIX86 -m486 -DISA_ENAB -DMCA_ENAB
+-   NO_OPT_MCFLAGS += -DIX86 -m486 -DISA_ENAB -DMCA_ENAB
+-endif
+-ifeq "$(findstring ia64, $(shell uname -m))" "ia64"
+-   MCFLAGS += -DIA64
+-   NO_OPT_MCFLAGS += -DIA64
++   MCFLAGS += -DISA_ENAB -DMCA_ENAB
++   NO_OPT_MCFLAGS += -DISA_ENAB -DMCA_ENAB
+ endif
+ MCFLAGS2 = -DVERSNUM=\"$(REL)\"
+ 
+diff -uNr eqnx-4.04-1/drv/sst.c eqnx-4.04-1.new/drv/sst.c
+--- eqnx-4.04-1/drv/sst.c	Thu Feb  7 17:08:50 2002
++++ eqnx-4.04-1.new/drv/sst.c	Thu Sep 12 23:39:37 2002
+@@ -760,7 +760,6 @@
+ 	/*(B9600 | CS8 | CREAD | HUPCL),*/
+ 	(B9600 | CS8 | CREAD | HUPCL | CLOCAL),
+ 	0,
+-	0,
+ 	INIT_C_CC
+ };
+ 
+@@ -3179,12 +3178,7 @@
+ 		if ((rc = remap_page_range((TASK_SIZE + 
+ 			((unsigned long) mpd->mpd_mem)), mpd->mpd_pmem, 
+ 				mpd->mpd_addrsz, PAGE_IOMEM))) {
+-#ifdef	IX86
+-			printk("EQUINOX: Failed to map physical address space = %x, errno = %d for board %d\n",
+-#endif	/* IX86 */
+-#ifdef	IA64
+-			printk("EQUINOX: Failed to map physical address space = %lx, errno = %d for board %d\n",
+-#endif	/* IA64 */
++				printk("EQUINOX: Failed to map physical address space = %lx, errno = %d for board %d\n",
+ 				(unsigned long) mpd->mpd_pmem, rc,k + 1); 
+ 		}
+ #endif
+@@ -8877,13 +8871,7 @@
+ 	struct serial_struct	sio;
+ 
+ #if DEBUG
+-#ifdef	IX86
+-	printk("eqnx_getserial(mpc=%lx,sp=%lx)\n", (unsigned long) mpc, (unsigned long) sp);
+-#endif	/* IX86 */
+-#ifdef	IA64
+ 	printk("eqnx_getserial(mpc=%lx,sp=%lx)\n", (unsigned long) mpc, (unsigned long) sp);
+-#endif	/* IA64 */
+-
+ #endif
+ 
+ 	memset(&sio, 0, sizeof(struct serial_struct));
+@@ -8912,12 +8900,7 @@
+ 	int win16;
+ 
+ #if DEBUG
+-#ifdef	IX86
+-	printk("eqnx_setserial(mpc=%lx,sp=%lx)\n", (unsigned long) mpc, (unsigned long) sp);
+-#endif	/* IX86 */
+-#ifdef	IA64
+ 	printk("eqnx_setserial(mpc=%lx,sp=%lx)\n", (unsigned long) mpc, (unsigned long) sp);
+-#endif	/* IA64 */
+ #endif
+ 
+ 	if (eqn_from_user(&sio, sp, sizeof(struct serial_struct)))
+diff -uNr eqnx-4.04-1/utils/makefile eqnx-4.04-1.new/utils/makefile
+--- eqnx-4.04-1/utils/makefile	Thu Feb  7 16:40:36 2002
++++ eqnx-4.04-1.new/utils/makefile	Thu Sep 12 23:43:06 2002
+@@ -6,14 +6,14 @@
+ include ../version.include
+ 
+ HERE=$(shell pwd)
+-INC = $(HERE)/../include
++INC = $(HERE)/../include 
+ SRC = $(HERE)/../drv
+ .EXPORT_ALL_VARIABLES:
+ 
+ HFILES = ../include/icp.h  ../include/ticp.h  ../include/sst.h \
+ 	../include/eqnx.h  ../include/eqn.h  ../include/ist.h 
+ 
+-INCLUDES = -I$(INC) 
++INCLUDES = -I$(INC) -I/usr/include/ncurses
+ MCFLAGS = -Wall -Wstrict-prototypes -O2 -pipe -DLINUX
+ MKNOBJ = ssmkn.o
+ 
+diff -uNr eqnx-4.04-1/utils/ssdiag/makefile eqnx-4.04-1.new/utils/ssdiag/makefile
+--- eqnx-4.04-1/utils/ssdiag/makefile	Thu Feb  7 16:41:56 2002
++++ eqnx-4.04-1.new/utils/ssdiag/makefile	Thu Sep 12 23:53:55 2002
+@@ -9,7 +9,7 @@
+ INC = $(HERE)/../../include
+ .EXPORT_ALL_VARIABLES: 
+ 
+-INCLUDES = -I./include -I$(INC) 
++INCLUDES = -I./include -I$(INC) -I/usr/include/ncurses
+ MCFLAGS = -Wall -O2 -pipe -DLINUX -DCHRDRVR
+ MCFLAGS2 = -DVERSNUM=\"$(REL)\"
+ LIBS = -lncurses
