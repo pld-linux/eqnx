@@ -22,10 +22,10 @@ and 8RJ boards. ISA and EISA are not available on Itanium systems.
 
 %description -l pl
 Ten pakiet zawiera sterownik i narzêdzia diagnostyczne dla kart
-wieloportowych i rozszerzealnych kontrolerów Equinox SuperSerial. Ten
-sterownik obs³uguje wersje ISA, EISA i PCI kart 2, 4, 8 i
-16-portowych, a tak¿e rozszerzalne karty 64 i 128-portowe oraz karty
-4RJ i 8RJ. ISA i EISA nie s± dostêpne w systemach Itanium.
+wieloportowych i rozszerzalnych kontrolerów Equinox SuperSerial. Ten
+sterownik obs³uguje wersje ISA, EISA i PCI kart 2, 4, 8 i 16-portowych, 
+a tak¿e rozszerzalne karty 64 i 128-portowe oraz karty 4RJ i 8RJ. ISA 
+i EISA nie s± dostêpne w systemach Itanium.
 
 %prep
 %setup -q -n %{name}-%{version}-1
