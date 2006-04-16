@@ -4,7 +4,6 @@ Name:		eqnx
 Version:	4.04
 Release:	1
 License:	GPL
-Vendor:		Equinox Systems, Inc.
 Group:		Applications/Communications
 Source0:	%{name}-%{version}-1.tar.gz
 # Source0-md5:	3b335ac7f525036ad3147907adcd0ec8
@@ -23,9 +22,9 @@ and 8RJ boards. ISA and EISA are not available on Itanium systems.
 %description -l pl
 Ten pakiet zawiera sterownik i narzêdzia diagnostyczne dla kart
 wieloportowych i rozszerzalnych kontrolerów Equinox SuperSerial. Ten
-sterownik obs³uguje wersje ISA, EISA i PCI kart 2, 4, 8 i 16-portowych, 
-a tak¿e rozszerzalne karty 64 i 128-portowe oraz karty 4RJ i 8RJ. ISA 
-i EISA nie s± dostêpne w systemach Itanium.
+sterownik obs³uguje wersje ISA, EISA i PCI kart 2, 4, 8 i
+16-portowych, a tak¿e rozszerzalne karty 64 i 128-portowe oraz karty
+4RJ i 8RJ. ISA i EISA nie s± dostêpne w systemach Itanium.
 
 %prep
 %setup -q -n %{name}-%{version}-1
@@ -91,7 +90,7 @@ echo "   Refer to installation notes for more information".
 %doc inst/INSTALL.TXT
 %doc inst/RELEASE.TXT
 %doc utils/ssdiag/README.ssdiag
-/etc/rc.d/init.d/eqnx
+%attr(754,root,root) /etc/rc.d/init.d/eqnx
 /lib/modules/*/*/*
 %attr(755,root,root) %{_bindir}/sscode
 %attr(755,root,root) %{_bindir}/ssdiag
