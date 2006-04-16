@@ -9,6 +9,7 @@ Source0:	%{name}-%{version}-1.tar.gz
 # Source0-md5:	3b335ac7f525036ad3147907adcd0ec8
 Patch0:		%{name}-misc.patch
 URL:		http://www.equinox.com/
+BuildRequires:	rpmbuild(macros) >= 1.268
 ExclusiveOS:	Linux
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -44,46 +45,27 @@ exit 1
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%preun
-# check driver usage.  If ports in use, disallow the remove
-if [ -e /sbin/chkconfig ]
-then
-	/sbin/chkconfig eqnx
-	if [ $? != 0 ]
-	then
-		exit 0
-	fi
-fi
+%post
+/sbin/chkconfig --add eqnx
+%service eqnx restart
 
-if [ -f /etc/rc.d/init.d/eqnx ]
-then
-	/etc/rc.d/init.d/eqnx status > /dev/null 2>&1
-	if [ $? != 0 ]
-	then
+%preun
+if [ "$1" = 0 ]; then
+	# check driver usage.  If ports in use, disallow the remove
+	/sbin/service eqnx status > /dev/null 2>&1
+	if [ $? != 0 ]; then
 		echo "eqnx driver in use, unable to unload"
 		echo "Please stop all processes running on SST ports"
 		exit 1
 	fi
-fi
 
-# stop the driver + remove device files
-if [ -f /etc/rc.d/init.d/eqnx ]
-then
-	/etc/rc.d/init.d/eqnx stop
-fi
+	# stop the driver + remove device files
+	%service eqnx stop
+	/sbin/chkconfig --del eqnx
 
-# remove eqnx from startup scripts
-if [ -e /usr/sbin/eqnx-installrc ]
-then
+	# remove eqnx from startup scripts
 	/usr/sbin/eqnx-installrc -u
 fi
-
-%post
-echo "To complete installation of the Equinox SST product:"
-echo "   1. /etc/rc.d/init.d/eqnx start"
-echo "   2. ensure this script is invoked at boot-time"
-echo "	    (such as chkconfig --add eqnx, for redhat, etc.)"
-echo "   Refer to installation notes for more information".
 
 %files
 %defattr(644,root,root,755)
