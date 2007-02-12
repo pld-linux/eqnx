@@ -1,5 +1,5 @@
 Summary:	Device driver/utilities for Equinox SST SuperSerial family
-Summary(pl.UTF-8):   Sterowniki do karty Equinox SST SuperSerial
+Summary(pl.UTF-8):	Sterowniki do karty Equinox SST SuperSerial
 Name:		eqnx
 Version:	4.04
 Release:	1
