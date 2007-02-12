@@ -1,5 +1,5 @@
 Summary:	Device driver/utilities for Equinox SST SuperSerial family
-Summary(pl):	Sterowniki do karty Equinox SST SuperSerial
+Summary(pl.UTF-8):   Sterowniki do karty Equinox SST SuperSerial
 Name:		eqnx
 Version:	4.04
 Release:	1
@@ -20,12 +20,12 @@ driver supports ISA, EISA and PCI versions of the 2, 4, 8 and 16 port
 boards as well as the expandable 64 and 128 port boards and the 4RJ
 and 8RJ boards. ISA and EISA are not available on Itanium systems.
 
-%description -l pl
-Ten pakiet zawiera sterownik i narzêdzia diagnostyczne dla kart
-wieloportowych i rozszerzalnych kontrolerów Equinox SuperSerial. Ten
-sterownik obs³uguje wersje ISA, EISA i PCI kart 2, 4, 8 i
-16-portowych, a tak¿e rozszerzalne karty 64 i 128-portowe oraz karty
-4RJ i 8RJ. ISA i EISA nie s± dostêpne w systemach Itanium.
+%description -l pl.UTF-8
+Ten pakiet zawiera sterownik i narzÄ™dzia diagnostyczne dla kart
+wieloportowych i rozszerzalnych kontrolerÃ³w Equinox SuperSerial. Ten
+sterownik obsÅ‚uguje wersje ISA, EISA i PCI kart 2, 4, 8 i
+16-portowych, a takÅ¼e rozszerzalne karty 64 i 128-portowe oraz karty
+4RJ i 8RJ. ISA i EISA nie sÄ… dostÄ™pne w systemach Itanium.
 
 %prep
 %setup -q -n %{name}-%{version}-1
