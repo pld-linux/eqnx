@@ -29,7 +29,7 @@ sterownik obsługuje wersje ISA, EISA i PCI kart 2, 4, 8 i
 
 %prep
 %setup -q -n %{name}-%{version}-1
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 %{__make} build CC=%{kgcc} OPT="%{rpmcflags}" SMP=0
